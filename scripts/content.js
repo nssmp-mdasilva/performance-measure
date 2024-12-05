@@ -1,5 +1,6 @@
 let elementFramesItems = [];
 let initialized = false;
+let pageLoadTime = null;
 
 function displayInfo(type, payload) {
     switch (type) {
@@ -12,19 +13,20 @@ function displayMeasureInfo({ selector, duration }) {
 }
 
 function displayMeasureInElementFrame(selector, duration) {
-    const infoText = createInfoText(selector, duration);
-
     if (initialized) {
+        const infoText = createInfoText(selector, duration);
         let elementInfoFrame = getOrCreateElementInfoFrame(selector);
         elementInfoFrame.appendChild(infoText);
     } else {
-        elementFramesItems.push({ selector, infoText });
+        elementFramesItems.push({ selector, duration });
     }
 }
 
 function createInfoText(selector, duration) {
     const infoText = document.createElement('span');
-    infoText.textContent = `Selector: ${selector} | Duration: ${duration.toFixed(2)}ms`;
+    console.log({ pageLoadTime });
+    const percentageOfLoadTime = ((duration / pageLoadTime) * 100).toFixed(4);
+    infoText.textContent = `Selector: ${selector} | Duration: ${duration.toFixed(2)}ms / ${pageLoadTime.toFixed(2)}ms (${percentageOfLoadTime}%)`;
     infoText.appendChild(document.createElement('br'));
     return infoText;
 }
@@ -76,9 +78,11 @@ function highlightElement(selector) {
 // Add any element info frames that wasn't added before initialization
 function initializeElementInfoFrames() {
     while (elementFramesItems.length) {
-        const { selector, infoText } = elementFramesItems.pop();
+        const { selector, duration } = elementFramesItems.pop();
+        const infoText = createInfoText(selector, duration);
 
         let elementInfoFrame = getOrCreateElementInfoFrame(selector);
+
         elementInfoFrame.appendChild(infoText);
     }
 }
@@ -88,11 +92,13 @@ function observePerformance() {
     const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
-            const selector = entry?.detail?.selector;
-            const duration = entry.duration || entry.value;
+            if (entry.entryType === 'measure') {
+                const selector = entry?.detail?.selector;
+                const duration = entry.duration || entry.value;
 
-            if (selector && duration) {
-                displayInfo(entry.entryType, { selector, duration });
+                if (selector && duration) {
+                    displayInfo(entry.entryType, { selector, duration });
+                }
             }
         });
     });
@@ -100,13 +106,23 @@ function observePerformance() {
     observer.observe({ entryTypes: ['measure'] });
 }
 
+function getPageLoadTime() {
+    const [navigationEntry] = performance.getEntriesByType('navigation');
+    console.log({ navigationEntry });
+    pageLoadTime = navigationEntry.duration;
+}
+
 // Initialize performance observation
 function initialize() {
     observePerformance();
 
     window.addEventListener('load', () => {
-        initializeElementInfoFrames();
-        initialized = true;
+        // Somehow page load time is always 0 when the load event fires. I could assume it's being calculated on window load too and our code runs before it
+        setTimeout(() => {
+            getPageLoadTime();
+            initializeElementInfoFrames();
+            initialized = true;
+        }, 0);
     });
 }
 
