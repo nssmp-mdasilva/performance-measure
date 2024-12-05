@@ -58,7 +58,7 @@ function createElementInfoFrame(element) {
     elementInfoFrame.style.display = 'flex';
     elementInfoFrame.style.flexDirection = 'column';
 
-    element.style.position = 'relative';
+    // element.style.position = 'relative';
     element.appendChild(elementInfoFrame);
 
     return elementInfoFrame;
