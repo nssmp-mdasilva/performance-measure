@@ -1,0 +1,175 @@
+.chrome-extension-popup {
+    width: 442px;
+    border-radius: 2px;
+    background:#FFF;
+    box-shadow: 6px 14px 6.3px 8px rgba(0, 0, 0, 0.05);
+    padding: 12px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Sora', sans-serif;
+}
+.chrome-extension-popup header {
+    background:#254B53 url('../images/hero-img.png') top left no-repeat;
+    background-size: cover; 
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    height: 100px;
+}
+.chrome-extension-popup h1 {
+    color: #FAFAFA;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    line-height: 100%;
+    letter-spacing: -1.28px;
+    font-weight: 200;
+}
+.chrome-extension-popup h1 span {
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+}
+.chrome-extension-popup ul {
+    color: #040A1E;
+    padding: 0;
+    margin: 20px 0;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: -0.96px;
+    list-style: none;
+    width: 80%;
+}
+.chrome-extension-popup ul li {
+    font-style: normal;
+    font-weight: 400;
+    line-height: 143%;
+    letter-spacing: -0.96px;
+    padding-left: 16px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+}
+.chrome-extension-popup button {
+    background:#6E5BFF;
+    border:0 none;
+    padding: 16px 8px; 
+    width: 100%;
+    text-align: center;
+    border-radius: 8px; 
+    color: #FAFAFA;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; 
+    text-transform: uppercase;
+    letter-spacing: -0.26px;
+    cursor: pointer;
+}
+.chrome-extension-popup footer p {
+    color: #040A1E;
+    text-align: left;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: -0.96px;
+}
+.chrome-extension-popup footer a {
+    color: #040A1E;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.element-info-frame {
+    position:absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgb(110, 91, 255, 0.65);
+    color: #FAFAFA;
+    z-index: 1000;
+    font-size: 14px;
+    font-family: 'Sora', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+.info-wrapper {
+    display: none;
+}
+.element-info-frame.show,
+.info-wrapper.show {
+    display: block;
+}
+
+.element-highlight {
+    position: relative;
+}
+.element-highlight.show {
+    border: 1px solid #6E5BFF;
+}
+.info-selector {
+    display: block;
+    color: #FAFAFA;
+    cursor: pointer;
+    padding: 8px 16px;
+    text-transform: capitalize;
+}
+.info-block {
+    position: absolute;
+    /* display: none; */
+    top: 85%;
+    left: 12px;
+    width: 220px;
+    height: 92px;
+    z-index: 1050;
+    background: url("data:image/svg+xml,%3Csvg width='362' height='137' viewBox='0 0 362 137' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M352.263 0.604492H10.4303C5.1823 0.604492 0.927979 2.8295 0.927979 5.57418V131.116C0.927979 133.861 5.1823 136.086 10.4303 136.086H352.263C357.511 136.086 361.766 133.861 361.766 131.116V5.57418C361.766 2.8295 357.511 0.604492 352.263 0.604492Z' fill='url(%23paint0_linear_18_487)'/%3E%3Cmask id='mask0_18_487' style='mask-type:luminance' maskUnits='userSpaceOnUse' x='0' y='0' width='362' height='137'%3E%3Cpath d='M352.26 0.602295H10.4266C5.17864 0.602295 0.924316 2.8273 0.924316 5.57199V131.114C0.924316 133.858 5.17864 136.083 10.4266 136.083H352.26C357.508 136.083 361.762 133.858 361.762 131.114V5.57199C361.762 2.8273 357.508 0.602295 352.26 0.602295Z' fill='white'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_18_487)'%3E%3Cpath d='M361.762 2.54785H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 11.3188H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 20.0933H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 28.8652H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 37.6389H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 46.4109H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 55.1853H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 63.96H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 72.7314H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 81.5063H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 90.2776H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 99.0491H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 107.826H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 116.598H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 125.372H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M361.762 134.144H0.924316' stroke='%23190E51' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_18_487' x1='362.745' y1='140.54' x2='274.732' y2='-80.6042' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23190E51'/%3E%3Cstop offset='1' stop-color='%236C38FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A");
+    border-radius: 4px;
+}
+/* .info-selector:hover + .info-block {
+    display: block;
+} */
+.info-block:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 97%;
+    height: 92%;
+    border-radius: 4px;
+    background-image: linear-gradient(315deg, #6C38FF 6.75%, #917BFF 71.65%) !important;
+}
+
+.info-block_top {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1100;
+    margin: 0 16px 0 12px;
+    padding: 12px 0 12px 0;
+}
+.info-block_top span {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 100%;
+    letter-spacing: -0.96px;
+}
+.info-block_bottom {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 16px;
+    z-index: 1100;
+    margin: 0 16px 0 12px;
+    padding: 12px 0 12px 0;
+    border-top: 1px solid #45F5EB;
+}

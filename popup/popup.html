@@ -2,11 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Extension Popup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Sora:200,400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/style.css">
+
 </head>
-<body>
-  <h1>Page Frame and Border Adder</h1>
-  <button id="enable">Enable</button>
+<body class="chrome-extension-popup">
+  <header>
+    <h1><span>Performance measure</span> for Chrome</h1>
+  </header>
+    <main>
+      <ul>
+        <li>
+          <img src="../images/list-icon.png" alt="checkmark" style="width: 16px;height: 16px;margin-right: 4px;">
+          See tracked sections visually on the page
+        </li>
+        <li>
+          <img src="../images/list-icon.png" alt="checkmark" style="width: 16px;height: 16px;margin-right: 4px;">
+          See performance data for those elements
+        </li>
+        <li>
+          <img src="../images/list-icon.png" alt="checkmark" style="width: 16px;height: 16px;margin-right: 4px;">
+          See total page load time & the percentage of load time spent on each section.
+        </li>
+      </ul>
+      <button id="accessPerformanceDataButton">Access Performance Data</button>
+    </main>
+    <footer>
+      <p>Need support? <a href="#">Get in touch</a> with our team.</p>
+    </footer>
+
+    <script src="../scripts/content.js" defer></script>
 </body>
 </html>

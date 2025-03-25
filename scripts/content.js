@@ -15,28 +15,27 @@ function displayMeasureInfo({ selector, duration }) {
 function displayMeasureInElementFrame(selector, duration) {
     if (initialized) {
         const infoText = createInfoText(selector, duration);
+        console.log('infoText', infoText);
         let elementInfoFrame = getOrCreateElementInfoFrame(selector);
         elementInfoFrame.appendChild(infoText);
+
     } else {
         elementFramesItems.push({ selector, duration });
     }
 }
 
-function createInfoText(selector, duration) {
-    const infoText = document.createElement('span');
-    console.log({ pageLoadTime });
-    const percentageOfLoadTime = ((duration / pageLoadTime) * 100).toFixed(4);
-    infoText.textContent = `Selector: ${selector} | Duration: ${duration.toFixed(2)}ms / ${pageLoadTime.toFixed(2)}ms (${percentageOfLoadTime}%)`;
-    infoText.appendChild(document.createElement('br'));
-    return infoText;
-}
-
 function getOrCreateElementInfoFrame(selector) {
+    console.log('getOrCreateElementInfoFrame');
+    console.log(selector);
     const element = document.querySelector(selector);
     let frame = element.getElementsByClassName('element-info-frame')[0] || null;
 
     if (!frame) {
-        frame = createElementInfoFrame(element);
+        frame = document.createElement('div');
+        frame.classList.add('element-info-frame');
+    
+        // element.style.position = 'relative';
+        element.appendChild(frame);
     }
 
     highlightElement(selector);
@@ -44,50 +43,68 @@ function getOrCreateElementInfoFrame(selector) {
     return frame;
 }
 
-function createElementInfoFrame(element) {
-    let elementInfoFrame = document.createElement('div');
-    elementInfoFrame.classList.add('element-info-frame');
-    elementInfoFrame.style.position = 'absolute';
-    elementInfoFrame.style.top = '0';
-    elementInfoFrame.style.left = '0';
-    elementInfoFrame.style.width = '100%';
-    elementInfoFrame.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    elementInfoFrame.style.color = 'white';
-    elementInfoFrame.style.padding = '10px';
-    elementInfoFrame.style.zIndex = '10000';
-    elementInfoFrame.style.fontSize = '14px';
-    elementInfoFrame.style.fontFamily = 'Arial, sans-serif';
-    elementInfoFrame.style.display = 'flex';
-    elementInfoFrame.style.flexDirection = 'column';
-
-    // element.style.position = 'relative';
-    element.appendChild(elementInfoFrame);
-
-    return elementInfoFrame;
-}
-
 // Function to add borders to targeted elements
 function highlightElement(selector) {
     const element = document.querySelector(selector);
 
     if (element) {
-        element.style.border = '2px solid red';
+        element.classList.add('element-highlight');
     }
 }
 
-// Add any element info frames that wasn't added before initialization
+function createInfoText(selector, duration) {
+    const percentageOfLoadTime = ((duration / pageLoadTime) * 100).toFixed(4);
+
+    const infoWrapper = document.createElement('div');
+          infoWrapper.classList.add('info-wrapper');
+
+    const infoText = document.createElement('span');
+          infoText.classList.add('info-selector');
+          infoText.textContent = `${selector.replace('#', '').replace('-', ' ')}`;
+
+    const textTop = document.createElement('div');
+          textTop.classList.add('info-block_top');
+          textTop.innerHTML = `${selector} <span>${percentageOfLoadTime}%</span>`;
+
+    const textBottom = document.createElement('div');
+          textBottom.classList.add('info-block_bottom');
+          textBottom.textContent = `${duration.toFixed(2)}ms / ${pageLoadTime.toFixed(2)}ms`;
+    const infoBlock = document.createElement('div');
+          infoBlock.classList.add('info-block');
+    
+          infoBlock.appendChild(textTop);
+          infoBlock.appendChild(textBottom);
+    infoWrapper.appendChild(infoText);
+    infoWrapper.appendChild(infoBlock);
+    return infoWrapper;
+}
+
 function initializeElementInfoFrames() {
     while (elementFramesItems.length) {
+
         const { selector, duration } = elementFramesItems.pop();
+
+        console.log('show the selector')
+        console.log(selector)
         const infoText = createInfoText(selector, duration);
 
         let elementInfoFrame = getOrCreateElementInfoFrame(selector);
 
+        let infoContainer = elementInfoFrame.querySelector('.info-container');
+        if (!infoContainer) {
+            infoContainer = document.createElement('div');
+            infoContainer.classList.add('info-container');
+            infoContainer.style.display = 'flex';
+            infoContainer.style.flexDirection = 'column';
+            infoContainer.style.gap = '5px'; // Add spacing between entries
+            elementInfoFrame.appendChild(infoContainer);
+        }
+        // Append the new info text to the container
+        infoContainer.appendChild(infoText);
         elementInfoFrame.appendChild(infoText);
     }
 }
 
-// Observe performance events and display them in UI
 function observePerformance() {
     const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
@@ -108,7 +125,6 @@ function observePerformance() {
 
 function getPageLoadTime() {
     const [navigationEntry] = performance.getEntriesByType('navigation');
-    console.log({ navigationEntry });
     pageLoadTime = navigationEntry.duration;
 }
 
@@ -117,7 +133,6 @@ function initialize() {
     observePerformance();
 
     window.addEventListener('load', () => {
-        // Somehow page load time is always 0 when the load event fires. I could assume it's being calculated on window load too and our code runs before it
         setTimeout(() => {
             getPageLoadTime();
             initializeElementInfoFrames();
@@ -127,3 +142,37 @@ function initialize() {
 }
 
 initialize();
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const button = document.getElementById('accessPerformanceDataButton');
+        if (button) {
+            button.addEventListener('click', () => {
+                chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                    if (tabs[0]) {
+                      chrome.scripting.executeScript({
+                        target: { tabId: tabs[0].id },
+                        func: renderPerformanceData,
+                        args: [{ className: `.element-info-frame, .info-wrapper, .element-highlight` }]
+                      });
+                    }
+                  });
+              });
+        }
+    }, 100);
+});
+
+
+  
+function renderPerformanceData({className}) {
+    const elements = document.querySelectorAll(className);
+
+    elements.forEach(element => {
+        element.classList.add('show');
+    });
+// document.body.style.backgroundColor = 'lightgreen';
+}
+
+
