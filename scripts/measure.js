@@ -108,6 +108,7 @@ function initializeElementInfoFrames() {
 function observePerformance() {
     const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
+
         entries.forEach((entry) => {
             if (entry.entryType === 'measure') {
                 const selector = entry?.detail?.selector;

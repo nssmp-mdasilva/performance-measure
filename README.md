@@ -1,19 +1,23 @@
 ```json
 {
-    "manifest_version": 3,
-    "name": "CWV Performance Measure",
-    "description": ".",
-    "version": "1.0",
-    "permissions": ["activeTab"],
-    "content_scripts": [
-      {
-        "matches": ["<all_urls>"],
-        "js": ["scripts/measure.js"],
-        "all_frames": true,
-        "run_at": "document_end"
-      }
-    ]
+  "manifest_version": 3,
+  "name": "CWV Performance Measure",
+  "description": ".",
+  "version": "1.0",
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
+  "content_scripts": [
+    {
+      "matches": ["http://localhost:3000/*", "http://localhost:5001/"],
+      "js": ["scripts/measure.js"],
+      "css": ["styles/style.css"],
+      "all_frames": true,
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
   }
+}
   ```
 
 
