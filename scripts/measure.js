@@ -15,7 +15,6 @@ function displayMeasureInfo({ selector, duration }) {
 function displayMeasureInElementFrame(selector, duration) {
     if (initialized) {
         const infoText = createInfoText(selector, duration);
-        console.log('infoText', infoText);
         let elementInfoFrame = getOrCreateElementInfoFrame(selector);
         elementInfoFrame.appendChild(infoText);
 
@@ -25,8 +24,6 @@ function displayMeasureInElementFrame(selector, duration) {
 }
 
 function getOrCreateElementInfoFrame(selector) {
-    console.log('getOrCreateElementInfoFrame');
-    console.log(selector);
     const element = document.querySelector(selector);
     let frame = element.getElementsByClassName('element-info-frame')[0] || null;
 
@@ -79,13 +76,11 @@ function createInfoText(selector, duration) {
     return infoWrapper;
 }
 
-function initializeElementInfoFrames() {
+function renderInfoFrames() {
     while (elementFramesItems.length) {
 
         const { selector, duration } = elementFramesItems.pop();
 
-        console.log('show the selector')
-        console.log(selector)
         const infoText = createInfoText(selector, duration);
 
         let elementInfoFrame = getOrCreateElementInfoFrame(selector);
@@ -131,12 +126,17 @@ function getPageLoadTime() {
 
 // Initialize performance observation
 function initialize() {
+    // Initialize PerformanceObserver as early as possible
     observePerformance();
 
+    // Render the collected performance data after the window.load event fires
     window.addEventListener('load', () => {
         setTimeout(() => {
+            // page timings are not immediately available on the window.load event
             getPageLoadTime();
-            initializeElementInfoFrames();
+
+            // attach info frames to DOM elements
+            renderInfoFrames();
             initialized = true;
         }, 0);
     });
