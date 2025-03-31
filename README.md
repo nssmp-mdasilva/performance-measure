@@ -8,7 +8,7 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["scripts/content.js"],
+        "js": ["scripts/measure.js"],
         "all_frames": true,
         "run_at": "document_end"
       }
