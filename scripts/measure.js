@@ -8,18 +8,18 @@ function displayInfo(type, payload) {
     }
 }
 
-function displayMeasureInfo({ selector, duration }) {
-    displayMeasureInElementFrame(selector, duration);
+function displayMeasureInfo(payload) {
+    displayMeasureInElementFrame(payload);
 }
 
-function displayMeasureInElementFrame(selector, duration) {
+function displayMeasureInElementFrame({ selector, duration, name }) {
     if (initialized) {
-        const infoText = createInfoText(selector, duration);
+        const infoText = createInfoText({ selector, duration, name });
         let elementInfoFrame = getOrCreateElementInfoFrame(selector);
         elementInfoFrame.appendChild(infoText);
 
     } else {
-        elementFramesItems.push({ selector, duration });
+        elementFramesItems.push({ selector, duration, name });
     }
 }
 
@@ -49,7 +49,7 @@ function highlightElement(selector) {
     }
 }
 
-function createInfoText(selector, duration) {
+function createInfoText({ selector, duration, name }) {
     const percentageOfLoadTime = ((duration / pageLoadTime) * 100).toFixed(4);
 
     const infoWrapper = document.createElement('div');
@@ -57,7 +57,7 @@ function createInfoText(selector, duration) {
 
     const infoText = document.createElement('span');
           infoText.classList.add('info-selector');
-          infoText.textContent = `${selector.replace('#', '').replace('-', ' ')}`;
+          infoText.textContent = name || `${selector.replace('#', '').replace('-', ' ')}`;
 
     const textTop = document.createElement('div');
           textTop.classList.add('info-block_top');
@@ -79,9 +79,9 @@ function createInfoText(selector, duration) {
 function renderInfoFrames() {
     while (elementFramesItems.length) {
 
-        const { selector, duration } = elementFramesItems.pop();
+        const { selector, duration, name } = elementFramesItems.pop();
 
-        const infoText = createInfoText(selector, duration);
+        const infoText = createInfoText({ selector, duration, name });
 
         let elementInfoFrame = getOrCreateElementInfoFrame(selector);
 
@@ -109,10 +109,11 @@ function observePerformance() {
         entries.forEach((entry) => {
             if (entry.entryType === 'measure') {
                 const selector = entry?.detail?.selector;
+                const name = entry?.detail?.name;
                 const duration = entry.duration || entry.value;
 
                 if (selector && duration) {
-                    displayInfo(entry.entryType, { selector, duration });
+                    displayInfo(entry.entryType, { selector, duration, name });
                 }
             }
         });
