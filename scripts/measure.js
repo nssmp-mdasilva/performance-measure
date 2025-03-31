@@ -98,6 +98,8 @@ function renderInfoFrames() {
         infoContainer.appendChild(infoText);
         elementInfoFrame.appendChild(infoText);
     }
+
+    initialized = true;
 }
 
 function observePerformance() {
@@ -132,12 +134,11 @@ function initialize() {
     // Render the collected performance data after the window.load event fires
     window.addEventListener('load', () => {
         setTimeout(() => {
-            // page timings are not immediately available on the window.load event
+            // Page timings are not immediately available on the window.load event
             getPageLoadTime();
 
-            // attach info frames to DOM elements
+            // Attach info frames to DOM elements
             renderInfoFrames();
-            initialized = true;
         }, 0);
     });
 }

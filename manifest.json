@@ -4,7 +4,7 @@
   "description": ".",
   "version": "1.0",
 
-  "permissions": ["activeTab", "scripting", "storage", "tabs"],
+  "permissions": ["activeTab", "scripting", "tabs"],
   "content_scripts": [
     {
       "matches": ["http://localhost:3000/*", "http://localhost:5001/"],

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    performance.mark('main-start');
+</script>
+
+<div id="main">
+    Example content
+</div>
+
+<script>
+    performance.mark('main-end');
+    performance.measure('main', { start: 'main-start', end: 'main-end', detail: { selector: '#main' } });
+</script>
+
+</body>
+</html>
